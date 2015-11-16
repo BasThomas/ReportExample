@@ -79,7 +79,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="message" id="7Od-WU-DCB">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="200" id="5Yz-qP-jiI">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="200" id="5Yz-qP-jiI">
                                         <rect key="frame" x="0.0" y="207.5" width="600" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Yz-qP-jiI" id="mOF-QU-jAO">
@@ -142,6 +142,9 @@
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                    <connections>
+                                                        <action selector="textFieldDidChange:" destination="MUH-O3-fkT" eventType="editingChanged" id="69u-RR-bTP"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <animations/>
@@ -179,6 +182,9 @@
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                    <connections>
+                                                        <action selector="textFieldDidChange:" destination="MUH-O3-fkT" eventType="editingChanged" id="oje-mJ-JrU"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <animations/>
@@ -216,6 +222,9 @@
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                    <connections>
+                                                        <action selector="textFieldDidChange:" destination="MUH-O3-fkT" eventType="editingChanged" id="Iph-WK-uG4"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <animations/>
@@ -233,7 +242,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="remember" id="CGV-ei-J3j">
+                            <tableViewSection headerTitle="remember" footerTitle="Disclaimer - show the user what is done with their information if its remembered" id="CGV-ei-J3j">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="DSa-8L-BEh">
                                         <rect key="frame" x="0.0" y="639.5" width="600" height="44"/>

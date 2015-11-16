@@ -10,6 +10,8 @@
 
 @interface ReportTableViewController : UITableViewController <UITextViewDelegate>
 
+// Please make sure all cells have a selection of None.
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *articleTitle;

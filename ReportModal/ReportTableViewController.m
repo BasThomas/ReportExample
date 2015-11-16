@@ -34,49 +34,14 @@ NSString *const kRememberKey = @"remember_details";
   _article = [[Article alloc] initWithID: 1
                                    title: @"How to reset Apple Watch"
                                reportURL: [NSURL URLWithString:@"reportURL.com/report/1"]];
-  
-  // The `done` button should only be enabled if the message, surname, last name and email
-  // have all been filled in. For brevity, this has been left out of this example.
-  // You can use `- textFieldChanged` for the text fields and `- textViewDidChange` for the text view.
-  [_doneButton setEnabled:YES];
   [self setup];
-}
-
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Actions
-- (IBAction)cancel:(id)sender {
-  // Dismiss the modal, without doing anything else.
-  [self dismissViewControllerAnimated:YES
-                           completion:nil];
-}
-
-- (IBAction)done:(id)sender {
-  // Dismiss the modal, but first save the content.
-  // Saving also takes care of reporting the article.
-  [self save];
-  
-  [self dismissViewControllerAnimated:YES
-                           completion:nil];
-}
-
-#pragma mark - UITextViewDelegate
-- (void)textViewDidChange:(UITextView *)textView {
-  // As a textView does not support placeholders, add one
-  // manually. Remove or add it here if needed.
-  if (textView.text.length == 0) {
-    _messageRequiredLabel.hidden = NO;
-  } else {
-    _messageRequiredLabel.hidden = YES;
-  }
 }
 
 #pragma mark - Setup
 - (void)setup {
   [self setupSpacing];
   
+  // Fetch all user defaults needed to populate the table.
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSString *surname = [defaults stringForKey: kSurnameKey];
   NSString *lastName = [defaults stringForKey: kLastNameKey];
@@ -85,6 +50,8 @@ NSString *const kRememberKey = @"remember_details";
   
   _articleTitle.text = _article.title;
   
+  // Let the messageTextView become first responder, so the user can
+  // immediately start typing their message.
   [_messageTextView becomeFirstResponder];
   
   _surnameTextField.text = surname;
@@ -113,6 +80,47 @@ NSString *const kRememberKey = @"remember_details";
   for (NSLayoutConstraint *constraint in labelConstraints) {
     constraint.constant = maxLabelWidth;
   }
+}
+
+#pragma mark - UITextViewDelegate
+- (void)textViewDidChange:(UITextView *)textView {
+  // As a textView does not support placeholders, add one
+  // manually. Hide or show it here if needed.
+  if (textView.text.length == 0) {
+    _messageRequiredLabel.hidden = NO;
+  } else {
+    _messageRequiredLabel.hidden = YES;
+  }
+  
+  _doneButton.enabled = [self filledIn];
+}
+
+#pragma mark - UITextField handling
+- (IBAction)textFieldDidChange:(UITextField *)textField {
+  // Hook up `Editing Changed` of all text fields to this method.
+  // See http://stackoverflow.com/a/13729112
+  
+  _doneButton.enabled = [self filledIn];
+}
+
+- (BOOL)filledIn {
+  // Check if the text view has been filled in.
+  // If it is not, return NO.
+  if (_messageTextView.text == nil || _messageTextView.text.length == 0) {
+    return NO;
+  }
+  
+  NSArray *textFields = [NSArray arrayWithObjects:_surnameTextField, _lastNameTextField, _emailTextField, nil];
+  
+  // Check if all text fields have been filled in.
+  // If one is not, return NO.
+  for (UITextField *textField in textFields) {
+    if (textField.text == nil || textField.text.length == 0) {
+      return NO;
+    }
+  }
+  
+  return YES;
 }
 
 #pragma mark - Saving
@@ -163,6 +171,8 @@ NSString *const kRememberKey = @"remember_details";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  // The below code gives the text fields first responder status
+  // if their corresponding cell has been selected.
   switch (indexPath.section) {
     case DetailSection:
       switch (indexPath.row) {
@@ -184,6 +194,22 @@ NSString *const kRememberKey = @"remember_details";
     default:
       break;
   }
+}
+
+#pragma mark - Actions
+- (IBAction)cancel:(id)sender {
+  // Dismiss the modal, without doing anything else.
+  [self dismissViewControllerAnimated:YES
+                           completion:nil];
+}
+
+- (IBAction)done:(id)sender {
+  // Dismiss the modal, but first save the content.
+  // Saving also takes care of reporting the article.
+  [self save];
+  
+  [self dismissViewControllerAnimated:YES
+                           completion:nil];
 }
 
 @end
